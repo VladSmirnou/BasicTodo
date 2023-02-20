@@ -29,5 +29,30 @@
                 </p>
             </div>
         {% endif %}
+        <ol>
+            {% for post in user_posts %}
+                <li>
+                    Author: {{ post.post_author.username }} | {{ post.post_date }} |
+                    {{ post.post_title }} |
+                    {{ post.post_context }}
+                    {% if user.is_authenticated and post.post_author == user %}
+                        <a hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                        style="color: rgb(228, 16, 34); cursor: pointer;"
+                        hx-delete="{% url 'delete_post' post.pk %}"
+                        hx-target="#main"
+                        hx-swap="innertHTML"
+                        hx-confirm="Are you sure?"
+                        >delete post</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+        {% if messages %}
+            <div id="messages" hx-get="{% url 'flash_message_cleaner' %}" hx-swap="outerHTML" hx-trigger="load delay:4s">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}
