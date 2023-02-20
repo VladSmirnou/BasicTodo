@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div id="main">
-        <h2>Simple Todo</h2>
+    <div class="container" id="main">
+        <h1 style="text-align:center;">Simple Todo</h1>
         {% if user.is_authenticated %}
-            Hello {{ user.username }}
-            <p>
-                <a style="color: blue; cursor: pointer;"
-                hx-get="{% url 'logout_user' %}"
-                hx-target="#main"
-                hx-swap="outerHTML"
-                >logout</a>
-            </p>
+            <div class="auth">
+                Hello {{ user.username }}!
+                <p>
+                    <a style="color: blue; cursor: pointer;"
+                    hx-get="{% url 'logout_user' %}"
+                    hx-target="#main"
+                    hx-swap="outerHTML"
+                    >logout</a>
+                </p>
+            </div>
         {% else %}
-            <div>
+            <div class="auth">
                 <p>If you want to create a post you'll need an
                     <a style="color: blue; cursor: pointer;"
                     hx-get="{% url 'create_user' %}"
@@ -29,12 +31,12 @@
                 </p>
             </div>
         {% endif %}
-        <ol>
+        <ol class="posts">
             {% for post in user_posts %}
                 <li>
-                    Author: {{ post.post_author.username }} | {{ post.post_date }} |
-                    {{ post.post_title }} |
-                    {{ post.post_context }}
+                    Author: {{ post.post_author.username }} Date created: {{ post.post_date }}
+                    <h3>{{ post.post_title }}</h3>
+                    <p>{{ post.post_context }}</p>
                     {% if user.is_authenticated and post.post_author == user %}
                         <a hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                         style="color: rgb(228, 16, 34); cursor: pointer;"
@@ -48,7 +50,11 @@
             {% endfor %}
         </ol>
         {% if messages %}
-            <div id="messages" hx-get="{% url 'flash_message_cleaner' %}" hx-swap="outerHTML" hx-trigger="load delay:4s">
+            <div style="text-align:center;"
+            id="messages"
+            hx-get="{% url 'flash_message_cleaner' %}"
+            hx-swap="outerHTML"
+            hx-trigger="load delay:4s">
                 {% for message in messages %}
                     {{ message }}
                 {% endfor %}
