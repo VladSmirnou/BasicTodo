@@ -1,0 +1,19 @@
+<div>
+    <h2>Login Page</h2>
+    <form>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button
+        hx-post="{% url 'login_user' %}"
+        hx-target="closest div"
+        hx-swap="outerHTML"
+        >Login</button>
+    </form>
+    <p>
+        <a style="color: blue; cursor: pointer;"
+        hx-get="{% url 'home_page' %}"
+        hx-target="closest div"
+        hx-swap="outerHTML"
+        >Home page</a>
+    </p>
+</div>

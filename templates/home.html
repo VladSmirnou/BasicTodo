@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id="main">
+        <h2>Simple Todo</h2>
+        {% if user.is_authenticated %}
+            Hello {{ user.username }}
+            <p>
+                <a style="color: blue; cursor: pointer;"
+                hx-get="{% url 'logout_user' %}"
+                hx-target="#main"
+                hx-swap="outerHTML"
+                >logout</a>
+            </p>
+        {% else %}
+            <div>
+                <p>If you want to create a post you'll need an
+                    <a style="color: blue; cursor: pointer;"
+                    hx-get="{% url 'create_user' %}"
+                    hx-target="#main"
+                    hx-swap="outerHTML"
+                    >account</a>
+                </p>
+                <p>
+                    <a style="color: blue; cursor: pointer;"
+                    hx-get="{% url 'login_user' %}"
+                    hx-target="#main"
+                    hx-swap="outerHTML"
+                    >Login</a> if you have an account
+                </p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
