@@ -1,0 +1,17 @@
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+}
+
+.auth {
+    display: table;
+    margin: auto;
+}
+
+
+div {
+   font-size: 1em;
+   font-family: Arial;
+}
