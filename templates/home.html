@@ -4,13 +4,20 @@
         <h1 style="text-align:center;">Simple Todo</h1>
         {% if user.is_authenticated %}
             <div class="auth">
-                Hello {{ user.username }}!
+                Hello <b>{{ user.username }}!</b>
                 <p>
                     <a style="color: blue; cursor: pointer;"
                     hx-get="{% url 'logout_user' %}"
                     hx-target="#main"
                     hx-swap="outerHTML"
                     >logout</a>
+                </p>
+                <p>
+                    <a style="color: rgb(196, 22, 141); cursor: pointer;"
+                    hx-get="{% url 'create_post' %}"
+                    hx-target="#main"
+                    hx-swap="outerHTML"
+                    ><b>Create new post</b></a>
                 </p>
             </div>
         {% else %}
@@ -44,7 +51,13 @@
                             hx-target="#main"
                             hx-swap="innertHTML"
                             hx-confirm="Are you sure?"
-                            >delete post</a>
+                            >Delete post</a> | 
+                            <a 
+                            style="color: rgb(13, 143, 67); cursor: pointer;"
+                            hx-post="{% url 'delete_post' post.pk %}"
+                            hx-target="#main"
+                            hx-swap="innertHTML"
+                            >Edit post</a>
                         {% endif %}
                     </div>
                 {% endfor %}
