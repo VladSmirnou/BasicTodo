@@ -4,13 +4,20 @@
         <h1 style="text-align:center;">Simple Todo</h1>
         {% if user.is_authenticated %}
             <div class="auth">
-                Hello {{ user.username }}!
+                Hello <b>{{ user.username }}!</b>
                 <p>
                     <a style="color: blue; cursor: pointer;"
                     hx-get="{% url 'logout_user' %}"
                     hx-target="#main"
                     hx-swap="outerHTML"
                     >logout</a>
+                </p>
+                <p>
+                    <a style="color: rgb(196, 22, 141); cursor: pointer;"
+                    hx-get="{% url 'create_post' %}"
+                    hx-target="#main"
+                    hx-swap="outerHTML"
+                    ><b>Create new post</b></a>
                 </p>
             </div>
         {% else %}
@@ -31,24 +38,30 @@
                 </p>
             </div>
         {% endif %}
-        <ol class="posts">
-            {% for post in user_posts %}
-                <li>
-                    Author: {{ post.post_author.username }} Date created: {{ post.post_date }}
-                    <h3>{{ post.post_title }}</h3>
-                    <p>{{ post.post_context }}</p>
-                    {% if user.is_authenticated and post.post_author == user %}
-                        <a hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                        style="color: rgb(228, 16, 34); cursor: pointer;"
-                        hx-delete="{% url 'delete_post' post.pk %}"
-                        hx-target="#main"
-                        hx-swap="innertHTML"
-                        hx-confirm="Are you sure?"
-                        >delete post</a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ol>
+            <div class="posts">
+                {% for post in user_posts %}
+                    <div style="border:2px solid #000000; padding:12px; margin: 8px; width:600px">
+                        Author: {{ post.post_author.username }} Date created: {{ post.post_date }}
+                        <h3>{{ post.post_title }}</h3>
+                        <p>{{ post.post_context }}</p>
+                        {% if user.is_authenticated and post.post_author == user %}
+                            <a hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            style="color: rgb(228, 16, 34); cursor: pointer;"
+                            hx-delete="{% url 'delete_post' post.pk %}"
+                            hx-target="#main"
+                            hx-swap="innertHTML"
+                            hx-confirm="Are you sure?"
+                            >Delete post</a> | 
+                            <a 
+                            style="color: rgb(13, 143, 67); cursor: pointer;"
+                            hx-post="{% url 'delete_post' post.pk %}"
+                            hx-target="#main"
+                            hx-swap="innertHTML"
+                            >Edit post</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                </div>
         {% if messages %}
             <div style="text-align:center;"
             id="messages"
