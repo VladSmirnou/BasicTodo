@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .forms import CustomUserCreationForm, CreatePostForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .models import UserPost
 from django.http import HttpResponse
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest
 
 # Even tho gunicorn pre-forks processes i still can add multiple threads 
 # per one process, so it's better to use class-based view, cus at least Django 
@@ -25,11 +22,8 @@ class CreateUser(View):
     template_name = 'auth/create_user.html'
 
     def get(self, request):
-        if request.htmx:
-            form = self.form_class()
-            return render(request, self.template_name, {'form': form})
-        else:
-            return redirect('home_page')
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -45,11 +39,8 @@ class LoginUser(View):
     template_name = 'auth/login_user.html'
 
     def get(self, request):
-        if request.htmx:
-            form = self.form_class()
-            return render(request, self.template_name, {'form': form})
-        else:
-            return redirect('home_page')
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = self.form_class(request, data=request.POST)
@@ -60,48 +51,14 @@ class LoginUser(View):
         return render(request, self.template_name, {'form': form})
 
 
-class CreatePost(View): 
-    form_class = CreatePostForm
-    template_name = 'create_post.html'
-
-    def get(self, request):
-        # i can't use login_required decorator because redirect is a normal 
-        # request
-        if not request.user.is_authenticated:
-            messages.error(request, 'You need to login first')
-            return redirect('home_page')
-        if request.htmx:
-            form = self.form_class()
-            return render(request, self.template_name, {'form': form})
-        else:
-            return redirect('home_page')
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.post_author_id = request.user.pk
-            form.save()
-            return redirect('home_page')
-        
-        return render(request, self.template_name, {'form': form})
-
-
 class DeletePost(View):
     def delete(self, request, pk):
-        # This check is for direct requests, like POST request from postman, etc., because 
-        # this view doesn't support GET request, so it is impossible to get
-        # this page.
-        if request.user.is_authenticated and request.method == 'DELETE':
-            try:
-                post = UserPost.objects.get(post_author=request.user.pk, pk=pk)
-                messages.success(request, f'Your post *{post.post_title}* was successfully deleted!')
-                post.delete()
-            except:
-                messages.error(request, 'Post doesn\'t exist')
-        else:
+        try:
+            post = UserPost.objects.get(post_author=request.user.pk, pk=pk)
+            messages.success(request, f'Your post *{post.post_title}* was successfully deleted!')
+            post.delete()
+        except:
             messages.error(request, 'Forbidden')
-
         return redirect('home_page')
 
 

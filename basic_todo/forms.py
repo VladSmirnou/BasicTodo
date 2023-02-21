@@ -15,10 +15,11 @@ class CustomUserCreationForm(UserCreationForm):
         )
 
 
-class CreatePostForm(ModelForm):
+class UserPostForm(ModelForm):
     class Meta:
         model = UserPost
         fields = [
-            'post_title', 
+            'post_author',
             'post_context', 
+            'post_title', 
         ]
