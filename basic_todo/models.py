@@ -12,8 +12,8 @@ class CustomUser(AbstractUser):
 
 class UserPost(models.Model):
     post_author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    post_title = models.CharField(max_length=100)
-    post_context = models.TextField(max_length=500)
+    post_title = models.CharField(max_length=55)
+    post_context = models.TextField(max_length=55)
     post_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
