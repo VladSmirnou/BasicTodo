@@ -54,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
-    'basic_todo.custom_middleware.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'basic_todo_core.urls'
