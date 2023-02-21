@@ -1,13 +1,13 @@
 <div class="auth">
-    <h1 style="text-align:center">Login Page</h1>
-    <form method="post">
+    <h1 style="text-align:center;">Create Post</h1>
+    <form>
         {% csrf_token %}
         {{ form.as_p }}
         <button
-        hx-post="{% url 'login_user' %}"
+        hx-post="{% url 'create_post' %}"
         hx-target="closest div"
         hx-swap="outerHTML"
-        >Login</button>
+        >Submit</button>
     </form>
     <p>
         <a style="color: blue; cursor: pointer;"
