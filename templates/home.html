@@ -40,7 +40,8 @@
         {% endif %}
             <div class="posts">
                 {% for post in user_posts %}
-                    <div style="border:2px solid #000000; padding:12px; margin: 8px; width:600px">
+                    <div id="post{{ post.pk }}" 
+                        style="border:2px solid #000000; padding:12px; margin: 8px; width:600px">
                         Author: {{ post.post_author.username }} Date created: {{ post.post_date }}
                         <h3>{{ post.post_title }}</h3>
                         <p>{{ post.post_context }}</p>
@@ -49,15 +50,27 @@
                             style="color: rgb(228, 16, 34); cursor: pointer;"
                             hx-delete="{% url 'delete_post' post.pk %}"
                             hx-target="#main"
-                            hx-swap="innertHTML"
+                            hx-swap="outerHTML"
                             hx-confirm="Are you sure?"
                             >Delete post</a> | 
                             <a 
                             style="color: rgb(13, 143, 67); cursor: pointer;"
-                            hx-post="{% url 'delete_post' post.pk %}"
-                            hx-target="#main"
+                            hx-get="{% url 'update_post' post.pk %}"
+                            hx-target="#post{{ post.pk }}"
                             hx-swap="innertHTML"
-                            >Edit post</a>
+                            hx-trigger="edit"
+                            {% comment %}
+                                I tried to block parallel updating, but
+                                hyperscript throws an error that Swal is null, have no idea why.
+                            {% endcomment %}
+                            _="on click
+                                if .editing is not empty
+                                    Swal.fire({title: 'Already Editing',
+                                            showCancelButton: true,
+                                            text:'Hey! You are already editing a post!'})
+                                    halt
+                                end
+                            trigger edit">Edit post</a>
                         {% endif %}
                     </div>
                 {% endfor %}

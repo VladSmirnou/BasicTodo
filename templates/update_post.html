@@ -1,0 +1,51 @@
+<div id="error" class="editing">
+    <form>
+        {% csrf_token %}
+        <div class="fieldWrapper">
+            <label for="{{ form.post_title.id_for_label }}">Post title:</label>
+            {{ form.post_title }}
+            <p></p>
+            {% if form.post_title.errors %}
+                <ul hx-get="{% url 'flash_message_cleaner' %}" hx-swap="outerHTML" hx-trigger="load delay:4s">
+                    {% for error in form.post_title.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="fieldWrapper">
+            <label for="{{ form.post_context.id_for_label }}">Post context:</label>
+            {{ form.post_context }}
+            <p></p>
+            {% if form.post_context.errors %}
+                <ul hx-get="{% url 'flash_message_cleaner' %}" hx-swap="outerHTML" hx-trigger="load delay:4s">
+                    {% for error in form.post_context.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <p></p>
+        <button
+        hx-post="{% url 'update_post' form.instance.pk %}"
+        hx-target="#main"
+        hx-swap="outerHTML"
+        >Update</button>
+        <button
+        hx-get="{% url 'home_page' %}"
+        hx-target="#main"
+        hx-swap="outerHTML"
+        >Back</button>
+    </form>
+    {% if messages %}
+        <div
+        style="text-align:center;"
+        hx-get="{% url 'flash_message_cleaner' %}"
+        hx-swap="outerHTML"
+        hx-trigger="load delay:4s">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+    {% endif %}
+</div>
