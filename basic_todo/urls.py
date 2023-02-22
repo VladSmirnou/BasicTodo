@@ -1,11 +1,13 @@
 from django.urls import path
+
 from .views import (
     home_page,
     CreateUser, 
     LoginUser, 
-    user_logout, 
+    user_logout,
+    CreatePost, 
     DeletePost, 
-    CreatePost,
+    UpdatePost,
     flash_message_cleaner,
 )
 
@@ -30,6 +32,7 @@ htmx_patterns = [
     path('logout_user/', user_logout, name='logout_user'),
     path('create_post/', CreatePost.as_view(), name='create_post'),
     path('delete_post/<int:pk>/', DeletePost.as_view(), name='delete_post'),
+    path('update_post/<int:pk>/', UpdatePost.as_view(), name='update_post'),
     path('flash_message_cleaner/', flash_message_cleaner, name='flash_message_cleaner'),
 ]
 
