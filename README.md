@@ -8,12 +8,16 @@ Use PostgreSQL instead of SLQLite.
 
 ## Installation
 ```
-Install requirements.txt
-Set environment variables from .env-template
-Migrate DB 
+Manually:
+  Install requirements.txt
+  Set environment variables from .env-template
+  Migrate DB
+Docker compose:
+  Set environment variables from .env-template
+  Run docker compose command
 ```
 
 ## Features
 ```
-No specific features yet.
+Docker compose support.
 ```
