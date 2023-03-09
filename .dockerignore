@@ -1,0 +1,12 @@
+.venv
+.git
+.env-template
+.env
+.gitignore
+/basic_todo_core/__pycache__
+/basic_todo/__pycache__
+README.md
+runtime.txt
+/basic_todo/migrations
+db.sqlite3
+Dockerfile
