@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  django-serv:
+    build: .
+    command: bash -c "pip install -r requirements.txt &&
+        python3 manage.py makemigrations basic_todo &&
+        python3 manage.py migrate &&
+        python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    depends_on:
+      postgres-serv:
+        # idk why 'service_completed_successfully' doesn't work,
+        # it finishes the postgres-serv container and it 'database system is ready to accept connections'
+        # forever until i run the django-serv container by hands from Docker GUI.
+        # Maybe there is should be a trigger or check to continute execution. 
+        condition: service_healthy
+
+  postgres-serv:
+    image: postgres:latest
+    environment: 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+
+volumes:
+  postgres-volume:

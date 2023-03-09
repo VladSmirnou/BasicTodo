@@ -1,0 +1,11 @@
+FROM python:3.11-bullseye
+
+WORKDIR /django/app
+
+COPY . /django/app
+
+EXPOSE 8000
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
