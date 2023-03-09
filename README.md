@@ -4,7 +4,7 @@
 Get used to class-based views.
 Repeat basic CRUD operations.
 Use git through the whole development process.
-Use PostgreSQL instead of SLQLite.
+Use PostgreSQL instead of SQLite.
 
 ## Installation
 ```
