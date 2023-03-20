@@ -17,7 +17,7 @@ from .utils import login_request_check
 # their dictionaries data
 
 def home_page(request):
-    user_posts = UserPost.objects.all()
+    user_posts = UserPost.objects.select_related('post_author')
     return render(request, 'home.html', {'user_posts': user_posts})
 
 

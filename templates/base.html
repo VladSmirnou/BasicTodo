@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="{% static 'rearrange.css' %}">
 </head>
     <body>
+        {% if debug %}
+        <script>
+            if (typeof window.htmx !== "undefined") {
+                htmx.on("htmx:afterSettle", function(detail) {
+                    if (
+                        typeof window.djdt !== "undefined"
+                        && detail.target instanceof HTMLBodyElement
+                    ) {
+                        djdt.show_toolbar();
+                    }
+                });
+            }
+        </script>
+        {% endif %}
         {% block content %}
         {% endblock content %}
     </body>
